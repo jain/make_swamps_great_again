@@ -21,9 +21,6 @@ public class VarActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.var);
         ArrayList<String> lst = new ArrayList<String>();
-        for (Map.Entry<String, String> entry: Constants.stringVar.entrySet()){
-            lst.add(entry.getKey() + " : " + entry.getValue());
-        }
         for (Map.Entry<String, Integer> entry: Constants.intVar.entrySet()){
             lst.add(entry.getKey() + " : " + entry.getValue());
         }

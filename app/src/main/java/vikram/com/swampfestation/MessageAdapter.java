@@ -16,8 +16,9 @@ import java.util.ArrayList;
  * Created by vikram on 7/2/16.
  */
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.SelViewHolder> {
-    private ArrayList<String> data;
-    public MessageAdapter(ArrayList<String> myDataset) {
+    private ArrayList<Screen.Msg> data;
+
+    public MessageAdapter(ArrayList<Screen.Msg> myDataset) {
         data = myDataset;
     }
 
@@ -30,30 +31,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.SelViewH
 
     @Override
     public void onBindViewHolder(SelViewHolder svh, int i) {
-        String[] msgs = data.get(i).split("[\\|]");
-        for (int j = 0; j<msgs.length; j++){
-            msgs[j] = msgs[j].trim();
-            if (msgs[j].startsWith("image")){
-                try {
-                    String url = msgs[j].split("[\\(\\)]")[1];
-                    ImageLoader imageLoader = ImageLoader.getInstance();
-                    imageLoader.displayImage(url, svh.photo);
-                } catch (Exception e){
-                }
-            } else if (msgs[j].startsWith("desc")){
-                try {
-                    String desc = msgs[j].split("[\\(\\)]")[1];
-                    svh.desc.setText(desc);
-                } catch (Exception e){
-                }
-            } else if (msgs[j].startsWith("title")){
-                try {
-                    String title = msgs[j].split("[\\(\\)]")[1];
-                    svh.title.setText(title);
-                } catch (Exception e){
-                }
-            }
-
+        Screen.Msg msg = data.get(i);
+        try {
+            ImageLoader imageLoader = ImageLoader.getInstance();
+            imageLoader.displayImage(msg.url, svh.photo);
+        } catch (Exception e) {
+        }
+        try {
+            svh.desc.setText(msg.desc);
+        } catch (Exception e) {
+        }
+        try {
+            svh.title.setText(msg.title);
+        } catch (Exception e) {
         }
 
     }

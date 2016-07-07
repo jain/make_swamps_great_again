@@ -23,13 +23,13 @@ public class InstructionsActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        Constants.reset();
-        DownloadWebpageTask dwt = new DownloadWebpageTask();
-        dwt.execute();
         //mp = MediaPlayer.create(this, R.raw.instructions);
         //mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
         //mp.setLooping(true);
         //mp.start();
+        Constants.reset();
+        DownloadWebpageTask dwt = new DownloadWebpageTask(this);
+        dwt.execute();
     }
     @Override
     protected void onPause(){
@@ -45,9 +45,17 @@ public class InstructionsActivity extends AppCompatActivity {
             } catch (Exception e){
                 Toast.makeText(this, "init scene not set", Toast.LENGTH_LONG).show();
             }
+        } else {
+            Toast.makeText(this, "there is no data", Toast.LENGTH_LONG).show();
         }
         //Intent intent = new Intent(this, SelectActivity.class);
         //startActivity(intent);
+    }
+
+    public void getNewData(View view){
+        Constants.reset();
+        DownloadWebpageTask dwt = new DownloadWebpageTask(this);
+        dwt.execute();
     }
 
 }

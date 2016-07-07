@@ -6,6 +6,7 @@ package vikram.com.swampfestation;
 
 import android.graphics.Point;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,12 +24,14 @@ import java.util.Map;
 
 public class DownloadWebpageTask extends AsyncTask<Void, Void, String[][]> {
     private String url;
+    private InstructionsActivity act;
 
     //"https://spreadsheets.google.com/tq?key=1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s";
-    public DownloadWebpageTask() {
+    public DownloadWebpageTask(InstructionsActivity act) {
         //String spreadsheetID = "1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s";
         //this.url =  "https://spreadsheets.google.com/feeds/list/" + spreadsheetID + "/od6/public/values?alt=json";
         this.url = "https://spreadsheets.google.com/feeds/cells/1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s/od6/public/basic?alt=json-in-script";
+        this.act = act;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class DownloadWebpageTask extends AsyncTask<Void, Void, String[][]> {
                 int val = Integer.parseInt(value);
                 Constants.intVar.put(key, val);
             } catch (Exception e) {
-                Constants.stringVar.put(key, value);
+                Toast.makeText(act, "bad data" + key + " " + value, Toast.LENGTH_SHORT).show();
             }
             index++;
         }
@@ -142,7 +145,7 @@ public class DownloadWebpageTask extends AsyncTask<Void, Void, String[][]> {
     // onPostExecute displays the results of the AsyncTask.
     @Override
     protected void onPostExecute(String[][] result) {
-        int i = 4;
+        Toast.makeText(act, "new data fetched!", Toast.LENGTH_SHORT).show();
     }
 
     private String downloadUrl(String urlString) throws IOException {

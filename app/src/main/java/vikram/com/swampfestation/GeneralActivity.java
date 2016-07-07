@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
  */
 
 
-public class GeneralActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class GeneralActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -31,30 +32,31 @@ public class GeneralActivity extends AppCompatActivity implements NavigationView
     private NavigationView navigationView;
     private ListView lstView;
     private TextView description;
+    ArrayList<Screen.IGButton> buts;
     FragmentInterface fr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cards);
-        description = (TextView)findViewById(R.id.description);
+        description = (TextView) findViewById(R.id.description);
 
 
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navigationView = (NavigationView) findViewById(R.id.navigation);
         navigationView.setNavigationItemSelectedListener(this);
-        mActivityTitle = getTitle().toString();
+        mActivityTitle = Constants.sc.title;
         setupDrawer();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        lstView =  (ListView) findViewById(R.id.buttons);
+        lstView = (ListView) findViewById(R.id.buttons);
         setupListView();
         setupFragment();
     }
 
-    public void setupFragment(){
-        getSupportActionBar().setTitle(Constants.sc.title);
-        description.setText(Constants.sc.getDescription());
-        if (Constants.sc.type.equals("c")){
+    public void setupFragment() {
+
+        if (Constants.sc.type.equals("c")) {
             fr = new MsgFragment();
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.msg_view, fr);
@@ -69,10 +71,17 @@ public class GeneralActivity extends AppCompatActivity implements NavigationView
     }
 
     public void setupListView() {
+        getSupportActionBar().setTitle(Constants.sc.title);
+        description.setText(Constants.sc.getDescription());
         lstView.invalidate();
+        buts = new ArrayList<Screen.IGButton>();
         ArrayList<String> links = new ArrayList<String>();
-        for (int i = 0; i<Constants.sc.buttons.size(); i++){
-            links.add(Constants.sc.parsedButtons.get(i).title);
+        for (int i = 0; i < Constants.sc.buttons.size(); i++) {
+            Screen.IGButton but = Constants.sc.parsedButtons.get(i);
+            if (!Constants.condition(this, but.conditions)) {
+                links.add(but.title);
+                buts.add(but);
+            }
         }
         ArrayAdapter linksAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, links);
         lstView.setAdapter(linksAdapter);
@@ -85,6 +94,7 @@ public class GeneralActivity extends AppCompatActivity implements NavigationView
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -103,12 +113,12 @@ public class GeneralActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         String sel = item.getTitle().toString();
-        if (sel.equals("var list")){
+        if (sel.equals("var list")) {
             Intent intent = new Intent(this, VarActivity.class);
             startActivity(intent);
         }
-        for (Characters.Player pl :Constants.ch.players){
-            if(sel.equals(pl.name)){
+        for (Characters.Player pl : Constants.ch.players) {
+            if (sel.equals(pl.name)) {
                 Constants.pl = pl;
                 Intent intent = new Intent(this, PlayerActivity.class);
                 startActivity(intent);
@@ -120,7 +130,7 @@ public class GeneralActivity extends AppCompatActivity implements NavigationView
     private void setupDrawer() {
         navigationView.getMenu().clear();
         Menu menu = navigationView.getMenu();
-        for (Characters.Player pl :Constants.ch.players){
+        for (Characters.Player pl : Constants.ch.players) {
             menu.add(pl.name);
         }
         menu.add("var list");
@@ -130,7 +140,7 @@ public class GeneralActivity extends AppCompatActivity implements NavigationView
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
+                getSupportActionBar().setTitle("See Status of Other Players!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 

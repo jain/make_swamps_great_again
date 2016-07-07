@@ -2,8 +2,10 @@ package vikram.com.swampfestation;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,7 +21,8 @@ public class ButClickListener implements AdapterView.OnItemClickListener {
     }
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
-        Screen.IGButton but = Constants.sc.parsedButtons.get(pos);
+        Toast.makeText(act, ((AppCompatTextView) view).getText().toString() +" pressed", Toast.LENGTH_SHORT).show();
+        Screen.IGButton but = act.buts.get(pos);
         act.fr.onEnd(but);
 
         String sc = but.next;
@@ -29,7 +32,7 @@ public class ButClickListener implements AdapterView.OnItemClickListener {
             act.setupListView();
             act.setupFragment();
         } catch (Exception e){
-
+            Toast.makeText(act, "no such screen "+ sc, Toast.LENGTH_LONG).show();
         }
     }
 }
