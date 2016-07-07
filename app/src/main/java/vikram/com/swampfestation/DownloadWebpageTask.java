@@ -3,8 +3,11 @@ package vikram.com.swampfestation;
 /**
  * Created by vikram on 7/1/16.
  */
+
+import android.graphics.Point;
 import android.os.AsyncTask;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,42 +17,132 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
-public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
-    /*AsyncResult callback;
-
-    public DownloadWebpageTask(AsyncResult callback) {
-        this.callback = callback;
-    }*/
+public class DownloadWebpageTask extends AsyncTask<Void, Void, String[][]> {
     private String url;
-    public DownloadWebpageTask (){
-        this.url = "https://spreadsheets.google.com/tq?key=1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s";
+
+    //"https://spreadsheets.google.com/tq?key=1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s";
+    public DownloadWebpageTask() {
+        //String spreadsheetID = "1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s";
+        //this.url =  "https://spreadsheets.google.com/feeds/list/" + spreadsheetID + "/od6/public/values?alt=json";
+        this.url = "https://spreadsheets.google.com/feeds/cells/1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s/od6/public/basic?alt=json-in-script";
     }
+
     @Override
-    protected String doInBackground(String... urls) {
+    protected String[][] doInBackground(Void... voids) {
 
         // params comes from the execute() call: params[0] is the url.
         try {
-            return downloadUrl(url);
+            String[][] data = parse(downloadUrl(url));
+            if (data != null) {
+                process(data);
+            }
+            return data;
         } catch (IOException e) {
-            return "Unable to download the requested page.";
+            return null;
         }
+    }
+
+    private void process(String[][] data) {
+        for (int i = 1; i < data[0].length; i++) {
+            Constants.ch.addCharacter(data, i);
+        }
+        int index = 8;
+        while (data[index][0] == null) {
+            String key = data[index][1];
+            String value = data[index][2];
+            try {
+                int val = Integer.parseInt(value);
+                Constants.intVar.put(key, val);
+            } catch (Exception e) {
+                Constants.stringVar.put(key, value);
+            }
+            index++;
+        }
+        int k = 5;
+        while (data[index][k] == null) {
+            k++;
+        }
+        index++;
+        int msgStart = 4;
+        int msgEnd = k - 1;
+        for (int i = index; i < data.length; i++) {
+            if (data[i][0] != null && data[i][3] != null) {
+                String id = data[i][0];
+                String type = data[i][3];
+                String title = "";
+                if (data[i][1] != null) {
+                    title = data[i][1];
+                }
+                String desc = "";
+                if (data[i][2] != null) {
+                    desc = data[i][2];
+                }
+
+                ArrayList<String> msgs = new ArrayList<String>();
+                for (int j = msgStart; j <= msgEnd; j++) {
+                    if (data[i][j] != null) {
+                        msgs.add(data[i][j]);
+                    }
+                }
+                ArrayList<String> buttons = new ArrayList<String>();
+                try {
+                    for (int j = k; data[i][j] != null; j++) {
+                        buttons.add(data[i][j]);
+                    }
+                } catch (Exception e){
+
+                }
+                Screen sc = new Screen(id, title, desc, type, msgs, buttons);
+                Constants.screens.put(id, sc);
+            }
+        }
+    }
+
+    private String[][] parse(String s) {
+        int start = s.indexOf("{", s.indexOf("{") + 1);
+        int end = s.lastIndexOf("}");
+        String jsonResponse = s.substring(start, end);
+        HashMap<Character, Integer> charIndMAp = new HashMap<Character, Integer>();
+        HashMap<Point, String> content = new HashMap<Point, String>();
+        Character ch = 'A';
+        for (int i = 0; i < 26; i++) {
+            charIndMAp.put(ch, i);
+            ch++;
+        }
+        try {
+            JSONObject table = new JSONObject(jsonResponse);
+            JSONArray cells = table.getJSONArray("entry");
+            int maxY = 0;
+            int maxX = 0;
+            for (int i = 0; i < cells.length(); i++) {
+                JSONObject cell = cells.getJSONObject(i);
+                String index = cell.getJSONObject("title").getString("$t");
+                int y = charIndMAp.get(index.charAt(0));
+                int x = Integer.parseInt(index.substring(1)) - 1;
+                maxX = Math.max(x, maxX);
+                maxY = Math.max(y, maxY);
+                content.put(new Point(x, y), cell.getJSONObject("content").getString("$t"));
+            }
+            String[][] rawData = new String[maxX + 1][maxY + 1];
+            for (Map.Entry<Point, String> entry : content.entrySet()) {
+                Point pt = entry.getKey();
+                rawData[pt.x][pt.y] = entry.getValue();
+            }
+            return rawData;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // onPostExecute displays the results of the AsyncTask.
     @Override
-    protected void onPostExecute(String result) {
-        // remove the unnecessary parts from the response and construct a JSON
-        int start = result.indexOf("{", result.indexOf("{") + 1);
-        int end = result.lastIndexOf("}");
-        String jsonResponse = result.substring(start, end);
-        try {
-            JSONObject table = new JSONObject(jsonResponse);
-            int i = 5;
-            //callback.onResult(table);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+    protected void onPostExecute(String[][] result) {
+        int i = 4;
     }
 
     private String downloadUrl(String urlString) throws IOException {

@@ -21,6 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".StoryActivity"></activity>
+        <activity android:name=".GeneralActivity"></activity>
+        <activity android:name=".PlayerActivity"></activity>
+        <activity android:name=".VarActivity"></activity>
     </application>
 
 </manifest>
