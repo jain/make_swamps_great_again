@@ -24,10 +24,10 @@ import vikram.com.swampfestation.helper.OnStartDragListener;
  * Created by vikram on 7/2/16.
  */
 public class DragAdapter extends RecyclerView.Adapter<DragAdapter.SelViewHolder> implements ItemTouchHelperAdapter {
-    ArrayList<String> data;
+    ArrayList<Screen.Msg> data;
     private final OnStartDragListener mDragStartListener;
 
-    public DragAdapter(ArrayList<String> myDataset, OnStartDragListener dragStartListener)  {
+    public DragAdapter(ArrayList<Screen.Msg> myDataset, OnStartDragListener dragStartListener)  {
         data = myDataset;
         mDragStartListener = dragStartListener;
     }
@@ -41,7 +41,7 @@ public class DragAdapter extends RecyclerView.Adapter<DragAdapter.SelViewHolder>
 
     @Override
     public void onBindViewHolder(final SelViewHolder svh, int i) {
-        svh.title.setText(data.get(i));
+        svh.title.setText(data.get(i).title);
         svh.title.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
