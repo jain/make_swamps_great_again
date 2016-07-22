@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -26,15 +27,20 @@ import vikram.com.swampfestation.helper.OnStartDragListener;
 public class DragAdapter extends RecyclerView.Adapter<DragAdapter.SelViewHolder> implements ItemTouchHelperAdapter {
     ArrayList<Screen.Msg> data;
     private final OnStartDragListener mDragStartListener;
+    //private final View.OnClickListener mOnClickListener;
+    private GeneralActivity act;
 
-    public DragAdapter(ArrayList<Screen.Msg> myDataset, OnStartDragListener dragStartListener)  {
+    public DragAdapter(ArrayList<Screen.Msg> myDataset, OnStartDragListener dragStartListener, GeneralActivity act)  {
         data = myDataset;
         mDragStartListener = dragStartListener;
+        this.act = act;
+        //mOnClickListener = new MyOnClickListener(act);
     }
 
     @Override
     public SelViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.drag_view, parent, false);
+        //v.setOnClickListener(mOnClickListener);
         SelViewHolder svh = new SelViewHolder(v);
         return svh;
     }
@@ -51,6 +57,7 @@ public class DragAdapter extends RecyclerView.Adapter<DragAdapter.SelViewHolder>
                 return false;
             }
         });
+        //Toast.makeText(act, "n00b", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -85,12 +92,23 @@ public class DragAdapter extends RecyclerView.Adapter<DragAdapter.SelViewHolder>
         }
         @Override
         public void onItemSelected() {
-            //itemView.setBackgroundColor(Color.LTGRAY);
+            itemView.setBackgroundColor(Color.LTGRAY);
         }
 
         @Override
         public void onItemClear() {
             //itemView.setBackgroundColor(0);
         }
+        /*@Override
+        public boolean onLongClick(View view) {
+            // Handle long click
+            Toast.makeText(act, "haah", Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        @Override
+        public void onClick(View view) {
+            Toast.makeText(act, "n00b", Toast.LENGTH_LONG).show();
+        }*/
     }
 }

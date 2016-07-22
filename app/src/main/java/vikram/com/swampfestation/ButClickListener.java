@@ -21,6 +21,7 @@ public class ButClickListener implements AdapterView.OnItemClickListener {
     }
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int pos, long id) {
+
         Toast.makeText(act, ((AppCompatTextView) view).getText().toString() +" pressed", Toast.LENGTH_SHORT).show();
         Screen.IGButton but = act.buts.get(pos);
         act.fr.onEnd(but);

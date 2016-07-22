@@ -2,6 +2,7 @@ package vikram.com.swampfestation;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ public class PlayerActivity extends AppCompatActivity {
         TextView name = (TextView) findViewById(R.id.name);
         name.setText(Constants.pl.name);
         TextView desc = (TextView) findViewById(R.id.description);
+        desc.setMovementMethod(new ScrollingMovementMethod());
         desc.setText(Constants.pl.desc);
         TextView happ = (TextView) findViewById(R.id.happiness);
         happ.setText("Happiness: " + Constants.pl.hap);

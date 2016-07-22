@@ -8,19 +8,32 @@
     >
     <TextView
         android:layout_width="match_parent"
+        android:text="Welcome To Swampfestation"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:gravity="center" />
+    <TextView
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
         android:text="Instructions"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:textStyle="bold"
-        android:textSize="40sp"
-        android:gravity="center" />
+        android:textSize="25sp"
+        android:gravity="center_vertical" />
     <TextView
+        android:paddingLeft="15dp"
         android:layout_width="match_parent"
-        android:text="Don't Be a N00b\nSupport Trump\nBuild a Wall with Mexico\nMake the Wall 10 feet higher! Repeat!\n Make America Great Again #MAGA #Trump2016"
+        android:text=
+"1) Play through this ethical decision- making game and make decision based on your own personal values.
+\n\n2)See how your decisions impact the world and the people around you.
+\n\n3)Consider the “legitimate needs and expectations of other” and think about how your decisions can affect your decisions in the future."
         android:layout_height="0dp"
         android:layout_weight="3"
         android:textStyle="bold"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -37,16 +50,6 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:onClick="start"
-        android:gravity="center" />
-    <Button
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:text="New Data"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:onClick="getNewData"
         android:gravity="center" />
     <TextView
         android:layout_width="match_parent"

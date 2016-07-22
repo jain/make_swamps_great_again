@@ -4,6 +4,7 @@ package vikram.com.swampfestation;
  * Created by vikram on 7/1/16.
  */
 
+import android.app.Activity;
 import android.graphics.Point;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -24,10 +25,10 @@ import java.util.Map;
 
 public class DownloadWebpageTask extends AsyncTask<Void, Void, String[][]> {
     private String url;
-    private InstructionsActivity act;
+    private Activity act;
 
     //"https://spreadsheets.google.com/tq?key=1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s";
-    public DownloadWebpageTask(InstructionsActivity act) {
+    public DownloadWebpageTask(Activity act) {
         //String spreadsheetID = "1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s";
         //this.url =  "https://spreadsheets.google.com/feeds/list/" + spreadsheetID + "/od6/public/values?alt=json";
         this.url = "https://spreadsheets.google.com/feeds/cells/1G_zFPHjp4WI1qpWwTCL8mASi_Sro0PBIIkkCkl4Ea_s/od6/public/basic?alt=json-in-script";

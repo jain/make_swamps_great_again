@@ -75,7 +75,8 @@ public class Screen {
         String title = "";
         ArrayList<String> conditions = new ArrayList<>();
         ArrayList<String> extra = new ArrayList<String>();
-
+        HashMap<Integer, Integer> priRank = new HashMap<Integer, Integer>();
+        String var1 = "";
         public Msg(String msge) {
             String[] msgs = msge.split("[\\|]");
             for (int j = 0; j < msgs.length; j++) {
@@ -98,6 +99,17 @@ public class Screen {
                     }
                 } else if (msg.startsWith("desc")) {
                     desc = msg.split("[\\(\\)]")[1].trim();
+                } else if(msg.startsWith("pos")){
+                    String intern = msg.split("[\\(\\)]")[1].trim();
+                    String[] pos = intern.split(",");
+                        try {
+                        var1 = pos[0].trim();
+                        for (int i = 1; i+1 < pos.length; i += 2) {
+                            priRank.put(Integer.parseInt(pos[i].trim()), Integer.parseInt(pos[i+1].trim()));
+                        }
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
                 } else {
                     extra.add(msgs[j]);
                 }

@@ -20,7 +20,7 @@ public class InstructionsActivity extends AppCompatActivity {
         ImageLoader.getInstance().init(ImageLoaderConfiguration.createDefault(InstructionsActivity.this));
         //mp = new MediaPlayer();
     }
-    @Override
+    /*@Override
     protected void onResume(){
         super.onResume();
         //mp = MediaPlayer.create(this, R.raw.instructions);
@@ -35,9 +35,9 @@ public class InstructionsActivity extends AppCompatActivity {
     protected void onPause(){
         super.onPause();
         //mp.stop();
-    }
+    }*/
     public void start(View view){
-        if (Constants.screens.size()!=0){
+        /*if (Constants.screens.size()!=0){
             try {
                 Constants.sc = Constants.screens.get("sc1");
                 Intent intent = new Intent(this, GeneralActivity.class);
@@ -47,15 +47,15 @@ public class InstructionsActivity extends AppCompatActivity {
             }
         } else {
             Toast.makeText(this, "there is no data", Toast.LENGTH_LONG).show();
-        }
-        //Intent intent = new Intent(this, SelectActivity.class);
-        //startActivity(intent);
+        }*/
+        Intent intent = new Intent(this, MyActivity.class);
+        startActivity(intent);
     }
 
-    public void getNewData(View view){
+    /*public void getNewData(View view){
         Constants.reset();
         DownloadWebpageTask dwt = new DownloadWebpageTask(this);
         dwt.execute();
-    }
+    }*/
 
 }
