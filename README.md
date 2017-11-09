@@ -1,2 +1,2 @@
 # PhilProject
-Game for ethical dilemna
+Game for ethical dilemma
